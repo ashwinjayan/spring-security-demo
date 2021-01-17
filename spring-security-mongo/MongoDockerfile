@@ -1,0 +1,6 @@
+FROM mongo
+USER root
+RUN mkdir -p /data/db
+ADD data /
+EXPOSE 27017
+ENTRYPOINT ["mongod"]

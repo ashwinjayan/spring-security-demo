@@ -1,0 +1,30 @@
+version: "3.1"
+services:
+    api-database:
+        image: mongo
+        container_name: "springboot-mongo-app"
+        volumes:
+            - /data/db:/data/db
+        environment:
+            MONGO_INITDB_ROOT_DATABASE: userdb
+        networks:
+            - test-network
+
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8086:8086"
+        links:
+            - api-database
+        environment:
+            SPRING_DATA_MONGODB_URI: mongodb://springboot-mongo-app:27017/userdb
+        depends_on:
+            - api-database
+        networks:
+            - test-network
+
+networks:
+    test-network:
+        driver: bridge
